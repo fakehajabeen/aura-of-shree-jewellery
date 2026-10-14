@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 
 import SiteNavigation from "@/components/navigation/SiteNavigation";
 import FeaturedProductCard from "@/components/products/FeaturedProductCard";
+import FestiveSaleBanner from "@/components/home/FestiveSaleBanner";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { productUseCases } from "@/server/use-cases/ProductUseCases";
 
@@ -13,87 +14,98 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   const products = await productUseCases.getProducts({
-    limit: 4,
+    limit: 8,
   });
 
   return (
     <main className="min-h-screen bg-[#F5EBDD] text-[#2B2020]">
-      {/* Announcement */}
-      <div className="bg-[#F5EBDD] px-4 py-2.5 text-center text-[10px] tracking-[0.2em] text-[#3A1A1B] sm:text-xs">
-        A LITTLE LUXURY, MADE FOR YOU
-      </div>
-
       <SiteNavigation isLoggedIn={Boolean(session?.user)} />
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 sm:py-16 lg:grid-cols-2 lg:px-10 lg:py-20">
-        <div className="max-w-xl">
-          <p className="mb-5 text-xs uppercase tracking-[0.3em] text-[#967344]">
-            Jewelry that feels like you
-          </p>
+      <section className="mx-auto grid max-w-7xl items-center gap-8 px-5 pt-3 pb-12 sm:pt-4 sm:pb-16 lg:grid-cols-2 lg:gap-12 lg:px-10 lg:pt-6 lg:pb-20">
+        <div className="flex flex-col justify-center max-w-xl">
+          <div className="mb-3 inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#967344]/30 bg-[#FFF9F0]/80 px-3.5 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#967344] shadow-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#E6A122] animate-pulse" />
+              Certified 22K Gold & Natural Gems
+            </span>
+          </div>
 
-          <h1 className="font-serif text-5xl leading-[1.12] tracking-tight text-[#3A1A1B] sm:text-6xl lg:text-7xl">
+          <div className="mb-3 inline-flex items-center gap-2.5">
+            <span className="h-[1.5px] w-7 bg-[#967344]" />
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#967344]">
+              Jewelry that feels like you
+            </p>
+          </div>
+
+          <h1 className="font-serif text-4xl leading-[1.12] tracking-tight text-[#3A1A1B] sm:text-5xl lg:text-6xl">
             A little
             <br />
             sparkle.
             <br />
-            <span className="italic">A lot of soul.</span>
+            <span className="italic animate-gold-shine-text">A lot of soul.</span>
           </h1>
 
-          <p className="mt-6 max-w-md text-base leading-7 text-[#6C5750]">
+          <p className="mt-4 sm:mt-5 max-w-md text-sm sm:text-base leading-7 text-[#6C5750]">
             Discover thoughtfully chosen jewelry that celebrates your
             individuality, your moments, and your everyday elegance.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-6 sm:mt-7 flex flex-wrap items-center gap-4">
             <Link
               href="/products"
-              className="bg-[#3A1A1B] px-7 py-4 text-sm tracking-wide text-[#FFF9F0] transition hover:bg-[#54292A]"
+              className="inline-flex items-center justify-center rounded-sm bg-[#3A1A1B] px-7 py-3.5 text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#FFF9F0] shadow-md transition-all duration-300 hover:bg-[#54292A] hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
               Explore Collection →
             </Link>
 
             <Link
               href="/categories"
-              className="border border-[#3A1A1B]/25 px-7 py-4 text-sm text-[#3A1A1B] transition hover:bg-[#3A1A1B]/5"
+              className="inline-flex items-center justify-center rounded-sm border border-[#3A1A1B]/30 px-7 py-3.5 text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#3A1A1B] shadow-xs transition-all duration-300 hover:bg-[#3A1A1B] hover:text-[#FFF9F0] hover:scale-[1.02] active:scale-[0.98]"
             >
               Discover More
             </Link>
           </div>
 
-          <div className="mt-12 flex gap-8 border-t border-[#3A1A1B]/15 pt-6">
+          <div className="mt-8 sm:mt-10 flex items-center gap-8 border-t border-[#3A1A1B]/15 pt-5 sm:pt-6">
             <div>
-              <p className="font-serif text-2xl text-[#3A1A1B]">Timeless</p>
-              <p className="mt-1 text-xs text-[#806D60]">Designs</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-[#3A1A1B]">Timeless</p>
+              <p className="mt-0.5 text-xs text-[#806D60]">Signature Designs</p>
             </div>
-
+            <div className="h-8 w-[1px] bg-[#3A1A1B]/15" />
             <div>
-              <p className="font-serif text-2xl text-[#3A1A1B]">Made</p>
-              <p className="mt-1 text-xs text-[#806D60]">For your moments</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-[#3A1A1B]">100% Pure</p>
+              <p className="mt-0.5 text-xs text-[#806D60]">Certified Gold & Gems</p>
             </div>
           </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute -inset-3 border border-[#B89A63]/40" />
+        <div className="relative mx-auto w-full max-w-[420px] sm:max-w-[460px] lg:max-w-[450px] xl:max-w-[480px] lg:ml-auto">
+          {/* Golden Breathing Radiance Outline */}
+          <div className="absolute -inset-2.5 sm:-inset-3 border animate-gold-glow rounded-sm pointer-events-none" />
 
-          <div className="relative h-[400px] overflow-hidden sm:h-[520px]">
+          {/* Image Box with 3:4 aspect ratio matching the portrait */}
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-[#2D1415] shadow-2xl">
             <Image
-              src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1400&q=90"
-              alt="Elegant jewelry from the signature collection"
+              src="/images/hero/bridal-mirror-portrait.jpg"
+              alt="Indian bride putting on luxury jewellery in vanity mirror - Aura of Shree Collection"
               fill
               priority
               unoptimized
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover object-center transition-transform duration-700 ease-out hover:scale-105"
             />
 
-            <div className="absolute bottom-5 left-5 bg-[#FFF9F0]/95 px-5 py-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#967344]">
-                The signature collection
+            {/* Soft luxury vignette at bottom */}
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+
+            {/* Compact Floating Signature Badge */}
+            <div className="absolute bottom-4 left-4 right-4 sm:right-auto rounded-sm border border-[#D4B77E]/40 bg-[#3A1A1B]/90 px-4 py-2 text-white shadow-xl backdrop-blur-md">
+              <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-[#D4B77E]">
+                Signature Collection
               </p>
-              <p className="mt-1 font-serif text-xl text-[#3A1A1B]">
-                Elegance in every detail
+              <p className="font-serif text-xs sm:text-sm text-[#FFF9F0] tracking-wide">
+                Elegance in Every Detail
               </p>
             </div>
           </div>
@@ -151,6 +163,9 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Festive Sale Banner (Below Products) */}
+      <FestiveSaleBanner />
+
       {/* Brand Story */}
       <section className="bg-[#3A1A1B] px-5 py-16 text-[#F5EBDD] lg:px-10 lg:py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
@@ -181,8 +196,8 @@ export default async function Home() {
 
           <div className="relative h-[350px] sm:h-[450px]">
             <Image
-              src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1200&q=85"
-              alt="Jewelry detail representing the Aura of Shree collection"
+              src="/images/products/royal-gold-necklace.jpg"
+              alt="Royal Handcrafted Gold and Polki Jewelry"
               fill
               unoptimized
               sizes="(max-width: 1024px) 100vw, 50vw"

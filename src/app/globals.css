@@ -55,3 +55,164 @@ input:-webkit-autofill:active {
   background: #3a1a1b;
   color: #fff9f0;
 }
+
+/* ==============================================================================
+   LUXURY JEWELLERY ANIMATION SUITE
+   ============================================================================== */
+
+@keyframes goldGlow {
+  0%, 100% {
+    border-color: rgba(184, 154, 99, 0.4);
+    box-shadow: 0 0 15px rgba(212, 183, 126, 0.2);
+  }
+  50% {
+    border-color: rgba(212, 183, 126, 0.95);
+    box-shadow: 0 0 35px rgba(212, 183, 126, 0.45), inset 0 0 20px rgba(212, 183, 126, 0.15);
+  }
+}
+
+@keyframes goldShineText {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes sparkleRotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes cartBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.25);
+  }
+  60% {
+    transform: scale(0.9);
+  }
+}
+
+@keyframes pulseLive {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes luxuryMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Utilities */
+.animate-gold-glow {
+  animation: goldGlow 4s ease-in-out infinite;
+}
+
+.animate-gold-shine-text {
+  background: linear-gradient(
+    90deg,
+    #3a1a1b 0%,
+    #967344 20%,
+    #d4b77e 40%,
+    #fff9f0 50%,
+    #d4b77e 60%,
+    #967344 80%,
+    #3a1a1b 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShineText 6s linear infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+.animate-sparkle-rotate {
+  animation: sparkleRotate 8s linear infinite;
+}
+
+.animate-pulse-live {
+  animation: pulseLive 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: luxuryMarquee 35s linear infinite;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+/* Luxury Light Sheen on Card Hover */
+.luxury-sheen-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-sheen-container::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 30%;
+  height: 220%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.group:hover .luxury-sheen-container::after {
+  opacity: 1;
+  left: 140%;
+  transition: left 0.85s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.2s ease;
+}
+

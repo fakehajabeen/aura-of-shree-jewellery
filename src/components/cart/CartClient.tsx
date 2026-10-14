@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import SiteNavigation from "@/components/navigation/SiteNavigation";
 
 const CART_KEY = "aura-cart-v1";
 
@@ -123,26 +124,7 @@ export default function CartClient() {
 
   return (
     <main className="min-h-screen bg-[#F5EBDD] text-[#2B2020]">
-      <header className="border-b border-[#3A1A1B]/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 lg:px-10">
-          <Link
-            href="/"
-            className="text-xl font-semibold tracking-[0.12em] text-[#3A1A1B] sm:text-2xl"
-          >
-            AURA <span className="font-light">OF SHREE</span>
-            <span className="mt-1 block text-center text-[9px] tracking-[0.42em]">
-              JEWELLERY
-            </span>
-          </Link>
-
-          <Link
-            href="/products"
-            className="text-sm text-[#3A1A1B] underline underline-offset-4"
-          >
-            Continue Shopping
-          </Link>
-        </div>
-      </header>
+      <SiteNavigation />
 
       <section className="mx-auto max-w-7xl px-5 py-12 lg:px-10 lg:py-16">
         <p className="text-xs uppercase tracking-[0.25em] text-[#967344]">

@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
 
+import SiteNavigation from "@/components/navigation/SiteNavigation";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { categoryUseCases } from "@/server/use-cases/CategoryUseCases";
 import { productUseCases } from "@/server/use-cases/ProductUseCases";
 
@@ -16,6 +19,7 @@ type CategoryPageProps = {
 export default async function CategoryPage({
   params,
 }: CategoryPageProps) {
+  const session = await getServerSession(authOptions);
   const { slug } = await params;
 
   const category = await categoryUseCases.getCategoryBySlug(slug);
@@ -38,26 +42,7 @@ export default async function CategoryPage({
 
   return (
     <main className="min-h-screen bg-[#F5EBDD] text-[#2B2020]">
-      <header className="border-b border-[#3A1A1B]/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-10">
-          <Link
-            href="/"
-            className="text-xl font-semibold tracking-[0.12em] text-[#3A1A1B] sm:text-2xl"
-          >
-            AURA <span className="font-light">OF SHREE</span>
-            <span className="mt-1 block text-center text-[9px] tracking-[0.42em]">
-              JEWELLERY
-            </span>
-          </Link>
-
-          <Link
-            href="/cart"
-            className="rounded-full border border-[#3A1A1B]/20 px-4 py-2 text-sm transition hover:bg-[#3A1A1B] hover:text-[#FFF9F0]"
-          >
-            Bag
-          </Link>
-        </div>
-      </header>
+      <SiteNavigation isLoggedIn={Boolean(session?.user)} />
 
       <section className="mx-auto max-w-7xl px-5 py-12 lg:px-10 lg:py-16">
         <Link

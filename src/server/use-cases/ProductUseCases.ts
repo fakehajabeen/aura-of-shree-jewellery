@@ -16,6 +16,7 @@ export class ProductUseCases {
   async getProducts(options?: {
     category?: string;
     featured?: boolean;
+    search?: string;
     limit?: number;
     skip?: number;
   }) {

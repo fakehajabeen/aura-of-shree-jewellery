@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 import { connectDB } from "@/lib/mongodb";
+import { Category } from "@/server/models/Category";
 import { Product, type ProductDocument } from "@/server/models/Product";
 
 type ProductImageInput = {
@@ -54,6 +55,7 @@ export class ProductRepository {
   async findMany(options?: {
     category?: string;
     featured?: boolean;
+    search?: string;
     limit?: number;
     skip?: number;
   }) {
@@ -63,12 +65,39 @@ export class ProductRepository {
       isActive: true,
     };
 
-    if (options?.category) {
-      filter.category = options.category;
+    if (options?.category && options.category !== "all") {
+      if (Types.ObjectId.isValid(options.category)) {
+        filter.category = options.category;
+      } else {
+        const categoryDoc = await Category.findOne({
+          slug: options.category.toLowerCase(),
+        }).lean();
+        if (categoryDoc) {
+          filter.category = categoryDoc._id;
+        } else {
+          // If category slug not found by exact slug, allow fuzzy regex match
+          const categoryFuzzy = await Category.findOne({
+            name: new RegExp(options.category, "i"),
+          }).lean();
+          if (categoryFuzzy) {
+            filter.category = categoryFuzzy._id;
+          }
+        }
+      }
     }
 
     if (options?.featured !== undefined) {
       filter.isFeatured = options.featured;
+    }
+
+    if (options?.search) {
+      const sanitized = options.search.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(sanitized, "i");
+      filter.$or = [
+        { name: regex },
+        { description: regex },
+        { sku: regex },
+      ];
     }
 
     return Product.find(filter)

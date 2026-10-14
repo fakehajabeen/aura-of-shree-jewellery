@@ -1,15 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+
+import SiteNavigation from "@/components/navigation/SiteNavigation";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { categoryUseCases } from "@/server/use-cases/CategoryUseCases";
 
 export const dynamic = "force-dynamic";
 
 export default async function CategoriesPage() {
+  const session = await getServerSession(authOptions);
   const categories = await categoryUseCases.getCategories();
 
   return (
-    <main className="min-h-screen bg-[#FFF9F0] px-6 py-12">
-      <div className="mx-auto max-w-7xl">
+    <main className="min-h-screen bg-[#FFF9F0]">
+      <SiteNavigation isLoggedIn={Boolean(session?.user)} />
+      <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="mb-10 text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-[#3A1A1B]">
             Explore

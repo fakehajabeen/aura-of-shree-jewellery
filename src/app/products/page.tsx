@@ -1,11 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+
+import SiteNavigation from "@/components/navigation/SiteNavigation";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { productUseCases } from "@/server/use-cases/ProductUseCases";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage() {
+export default async function ProductsPage(props: {
+  searchParams?: Promise<{
+    category?: string;
+    search?: string;
+    featured?: string;
+  }>;
+}) {
+  const session = await getServerSession(authOptions);
+  const resolvedParams = props.searchParams ? await props.searchParams : {};
+  const { category, search, featured } = resolvedParams;
+
   const products = await productUseCases.getProducts({
+    category,
+    search,
+    featured: featured === "true" ? true : undefined,
     limit: 50,
   });
 
@@ -16,47 +33,37 @@ export default async function ProductsPage() {
       maximumFractionDigits: 0,
     }).format(price);
 
+  const pageTitle = search
+    ? `Search: "${search}"`
+    : category
+      ? `${category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, " ")}`
+      : featured === "true"
+        ? "New Arrivals"
+        : "All Jewellery";
+
   return (
     <main className="min-h-screen bg-[#F5EBDD] text-[#2B2020]">
-      <header className="border-b border-[#3A1A1B]/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-10">
-          <Link
-            href="/"
-            className="text-xl font-semibold tracking-[0.12em] text-[#3A1A1B] sm:text-2xl"
-          >
-            AURA <span className="font-light">OF SHREE</span>
-            <span className="mt-1 block text-center text-[9px] tracking-[0.42em]">
-              JEWELLERY
-            </span>
-          </Link>
+      <SiteNavigation isLoggedIn={Boolean(session?.user)} />
 
-          <Link
-            href="/cart"
-            className="rounded-full border border-[#3A1A1B]/20 px-4 py-2 text-sm transition hover:bg-[#3A1A1B] hover:text-[#FFF9F0]"
-          >
-            Bag (0)
-          </Link>
-        </div>
-      </header>
-
-      <section className="mx-auto max-w-7xl px-5 py-12 lg:px-10 lg:py-16">
+      <section className="mx-auto max-w-7xl px-5 py-8 lg:px-10 lg:py-12">
         <p className="text-xs uppercase tracking-[0.3em] text-[#967344]">
-          Discover your favorites
+          {search ? "Search Results" : "Discover your favorites"}
         </p>
 
         <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-serif text-4xl text-[#3A1A1B] sm:text-6xl">
-              All Jewellery
+            <h1 className="font-serif text-3xl capitalize text-[#3A1A1B] sm:text-5xl">
+              {pageTitle}
             </h1>
 
-            <p className="mt-4 max-w-xl text-sm leading-7 text-[#806D60]">
-              Explore timeless designs and find the pieces that feel uniquely
-              yours.
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#806D60]">
+              {search
+                ? `Showing jewellery pieces matching "${search}".`
+                : "Explore timeless designs and find the pieces that feel uniquely yours."}
             </p>
           </div>
 
-          <p className="text-sm text-[#806D60]">
+          <p className="text-sm font-medium text-[#806D60]">
             {products.length} {products.length === 1 ? "product" : "products"}
           </p>
         </div>
